@@ -1,13 +1,25 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { ArrowRight, Database, Trophy, Zap, Github } from "lucide-react"
+import { ArrowRight, Database, Trophy, Zap, Github, Menu } from "lucide-react"
 import Link from "next/link"
 import { ModeToggle } from "@/components/mode-toggle"
 import { ThemeCustomizer } from "@/components/theme-customizer"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 export default function Home() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const isDesktop = useMediaQuery("(min-width: 768px)")
+
+  useEffect(() => {
+    if (isDesktop) {
+      setIsMobileMenuOpen(false)
+    }
+  }, [isDesktop])
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/20 p-3 md:p-6">
       
@@ -20,14 +32,60 @@ export default function Home() {
             <Database className="w-6 h-6 text-primary" />
             <span>Mongo<span className="text-primary">Playground</span></span>
         </div>
-        <div className="flex items-center gap-2">
+        
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-2">
              <ThemeCustomizer />
              <ModeToggle />
              <Button variant="ghost" size="icon" asChild>
                  <Link href="https://github.com" target="_blank">
-                     <Github className="w-5 h-5" />
+                     <Github className="w-5 h-5 text-primary" />
                  </Link>
              </Button>
+        </div>
+
+        {/* Mobile Nav */}
+        <div className="md:hidden">
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <Menu className="w-5 h-5" />
+                    </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] sm:w-[400px] sm:max-w-none pt-16 px-6">
+                    <SheetHeader className="mb-6 text-left">
+                        <SheetTitle>Menu</SheetTitle>
+                    </SheetHeader>
+                    
+                    <div className="flex flex-col gap-6">
+                        {/* Appearance Section */}
+                        <div className="space-y-3">
+                            <h4 className="text-sm font-medium text-muted-foreground px-1">Appearance</h4>
+                            <div className="grid gap-3">
+                                <div className="flex items-center justify-between p-4 rounded-xl bg-secondary/30 border border-border/50">
+                                    <span className="font-medium">Theme Color</span>
+                                    <ThemeCustomizer />
+                                </div>
+                                <div className="flex items-center justify-between p-4 rounded-xl bg-secondary/30 border border-border/50">
+                                    <span className="font-medium">Display Mode</span>
+                                    <ModeToggle />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Links Section */}
+                        <div className="space-y-3">
+                             <h4 className="text-sm font-medium text-muted-foreground px-1">Community</h4>
+                             <Button variant="secondary" className="w-full justify-start h-12 px-4 rounded-xl text-base font-medium" asChild>
+                                <Link href="https://github.com" target="_blank">
+                                    <Github className="w-5 h-5 mr-3 text-primary" />
+                                    Star on GitHub
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </SheetContent>
+            </Sheet>
         </div>
       </nav>
 
@@ -53,7 +111,7 @@ export default function Home() {
             <span>v1.0 Public Beta</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter">
+          <h1 className="text-5xl md:text-8xl font-black tracking-tighter">
             Master <span className="text-primary block md:inline">MongoDB</span>
           </h1>
           

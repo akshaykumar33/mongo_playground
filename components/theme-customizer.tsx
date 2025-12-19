@@ -46,7 +46,7 @@ export function ThemeCustomizer() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="h-9 w-9">
-          <Paintbrush className="h-4 w-4" />
+          <Paintbrush className="h-4 w-4 text-primary" />
           <span className="sr-only">Customize theme</span>
         </Button>
       </DropdownMenuTrigger>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { getQuestions, Question } from "@/data/questions"
 import { collections } from "@/data/collections"
 import { MongoEngine } from "@/lib/mongo-engine"
-import { Play, RotateCcw, CheckCircle, AlertCircle, ArrowRight, List, Database, Check, ArrowUpDown } from "lucide-react"
+import { Play, RotateCcw, CheckCircle, AlertCircle, ArrowRight, List, Database, Check, ArrowUpDown, Menu } from "lucide-react"
 import { useGameStore } from "@/hooks/use-game-store"
 import { toast } from "sonner"
 import { EditorConfig } from "@/app/playground/EditorConfig"
@@ -60,11 +60,19 @@ export default function PlaygroundPage() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
   const [isRunning, setIsRunning] = useState(false)
   const [isTerminalTop, setIsTerminalTop] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const { completeChallenge, addXp, completedChallenges } = useGameStore()
   
   // Initialize Engine
   const engine = useMemo(() => new MongoEngine(), [])
+
+  // Auto-close mobile menu on resize
+  useEffect(() => {
+    if (isDesktop) {
+        setIsMobileMenuOpen(false)
+    }
+  }, [isDesktop])
 
   // Update code when question changes
   useEffect(() => {
@@ -140,22 +148,28 @@ export default function PlaygroundPage() {
       <EditorConfig />
       
       {/* Header */}
-      <header className="flex-none h-14  backdrop-blur shadow-sm flex items-center justify-between px-4 z-10">
+      <header className="flex-none h-14 backdrop-blur shadow-sm flex items-center justify-between px-4 z-10 w-full overflow-hidden">
+         {/* Desktop & Mobile Title / Home */}
          <div className="flex items-center gap-4">
-             <Button variant="ghost" size="sm" onClick={() => router.push("/")} className="text-muted-foreground hover:text-foreground">
+             {/* Desktop Home Button */}
+             <Button variant="ghost" size="sm" onClick={() => router.push("/")} className="text-muted-foreground hover:text-foreground hidden md:flex">
                  &larr; Home
              </Button>
-             <div className="flex items-center gap-3">
-                 <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+             
+             {/* Logo/Title */}
+             <div className="flex items-center gap-2 md:gap-3">
+                 <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60 truncate max-w-[200px] md:max-w-none">
                     Mongo Playground
                  </span>
-                 <Badge variant="outline" className="font-mono text-xs uppercase tracking-wider border-primary text-primary">
+                 {/* Desktop Badge */}
+                 <Badge variant="outline" className="font-mono text-xs uppercase tracking-wider border-primary text-primary hidden md:inline-flex">
                     {levelId}
                  </Badge>
              </div>
          </div>
 
-         <div className="flex items-center gap-2">
+         {/* Desktop Navigation Group */}
+         <div className="hidden md:flex items-center gap-2">
             
             {/* Collections Viewer */}
             <Dialog>
@@ -288,6 +302,147 @@ export default function PlaygroundPage() {
              
              <ThemeCustomizer />
              <ModeToggle />
+         </div>
+
+         {/* Mobile Hamburger Menu (md:hidden) */}
+         <div className="md:hidden flex items-center gap-2">
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-9 w-9">
+                        <Menu className="h-5 w-5" />
+                    </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[85vw] sm:w-[350px] p-0">
+                    <div className="flex flex-col h-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                        {/* Mobile Header Title */}
+                         <div className="p-4 border-b">
+                             <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                                Mongo Playground
+                            </span>
+                            <div className="mt-1 flex gap-2">
+                                <Badge variant="outline" className="font-mono text-xs border-primary text-primary">
+                                    {levelId}
+                                </Badge>
+                            </div>
+                        </div>
+
+                        <ScrollArea className="flex-1">
+                            <div className="flex flex-col gap-2 p-4">
+                                {/* Mobile Nav Items */}
+                                <Button variant="ghost" className="justify-start px-2 h-10 w-full" onClick={() => router.push("/")}>
+                                    <ArrowRight className="w-4 h-4 mr-2 rotate-180 text-primary" />
+                                    Back to Home
+                                </Button>
+                                
+                                {/* Mobile Questions Trigger */}
+                                <Sheet>
+                                    <SheetTrigger asChild>
+                                        <Button variant="ghost" className="justify-start px-2 h-10 w-full">
+                                            <List className="w-4 h-4 mr-2 text-primary" />
+                                            Questions List
+                                        </Button>
+                                    </SheetTrigger>
+                                    <SheetContent side="left" className="w-[100vw] sm:w-[400px] p-0 z-[60]">
+                                         <div className="p-4 border-b flex items-center justify-between">
+                                             <h2 className="font-bold text-lg">Questions</h2>
+                                             {/* Optional close button or something could go here if needed, but default cross works */}
+                                         </div>
+                                         <ScrollArea className="h-[calc(100vh-80px)]">
+                                             <div className="p-4 space-y-6">
+                                                 {Object.entries(groupedQuestions).map(([category, questions]) => (
+                                                     <div key={category}>
+                                                         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{category}</h3>
+                                                         <div className="space-y-1">
+                                                             {questions.map(q => (
+                                                                 <button
+                                                                     key={q.id}
+                                                                     onClick={() => setCurrentQuestion(q)}
+                                                                     className={cn(
+                                                                         "w-full text-left px-3 py-2 rounded-none text-sm transition-colors flex items-center justify-between group",
+                                                                         currentQuestion.id === q.id 
+                                                                            ? "bg-primary/10 text-primary font-medium" 
+                                                                            : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                                                                     )}
+                                                                 >
+                                                                     <span className="truncate mr-2">{q.title}</span>
+                                                                     {completedChallenges.includes(q.id) && (
+                                                                         <Check className="w-3 h-3 text-green-500 shrink-0" />
+                                                                     )}
+                                                                 </button>
+                                                             ))}
+                                                         </div>
+                                                     </div>
+                                                 ))}
+                                             </div>
+                                         </ScrollArea>
+                                    </SheetContent>
+                                </Sheet>
+
+                                 {/* Mobile Collections Trigger */}
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="ghost" className="justify-start px-2 h-10 w-full">
+                                            <Database className="w-4 h-4 mr-2 text-primary" />
+                                            View Collections
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="max-w-[95vw] h-[85vh] p-0 z-[60] gap-0">
+                                        <DialogHeader className="p-4 border-b">
+                                            <DialogTitle className="text-xl text-primary">Collections</DialogTitle>
+                                        </DialogHeader>
+                                        <Tabs defaultValue="users" className="flex-1 flex flex-col min-h-0 overflow-hidden">
+                                            <div className="px-4 py-2 border-b bg-muted/20">
+                                                <ScrollArea className="w-full whitespace-nowrap">
+                                                    <TabsList className="bg-transparent p-0 gap-2 h-auto">
+                                                        {Object.keys(collections).map(name => (
+                                                            <TabsTrigger key={name} value={name} className="capitalize data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-1.5 h-auto text-xs sm:text-sm">
+                                                                {name}
+                                                            </TabsTrigger>
+                                                        ))}
+                                                    </TabsList>
+                                                </ScrollArea>
+                                            </div>
+                                            
+                                             {Object.entries(collections).map(([name, data]) => (
+                                                <TabsContent key={name} value={name} className="flex-1 min-h-0 overflow-hidden flex flex-col mt-0">
+                                                    <ScrollArea className="flex-1 h-full bg-muted/10 p-4">
+                                                        <div className="space-y-4">
+                                                            {data.slice(0, 20).map((doc: any, i: number) => (
+                                                                <div key={i} className="bg-card text-card-foreground p-0 rounded-none border shadow-sm overflow-hidden flex flex-col">
+                                                                    <div className="px-3 py-2 border-b bg-muted/20 flex items-center justify-between gap-2">
+                                                                         <div className="flex items-center gap-2 overflow-hidden">
+                                                                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">ID</span>
+                                                                            <Badge variant="secondary" className="font-mono text-[10px] bg-primary/10 text-primary truncate max-w-[100px]">{doc._id}</Badge>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-3 text-[10px] sm:text-xs font-mono bg-background/50">
+                                                                         <ObjectRenderer data={doc} />
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </ScrollArea>
+                                                </TabsContent>
+                                            ))}
+                                        </Tabs>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                        </ScrollArea>
+                        
+                        {/* Footer Controls */}
+                        <div className="border-t p-4 bg-muted/10">
+                             <div className="flex items-center justify-between">
+                                 <span className="text-sm font-medium text-muted-foreground">Appearance</span>
+                                 <div className="flex gap-2">
+                                     <ThemeCustomizer />
+                                     <ModeToggle />
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </SheetContent>
+            </Sheet>
          </div>
       </header>
 
