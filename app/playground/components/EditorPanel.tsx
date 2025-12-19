@@ -39,7 +39,7 @@ export function EditorPanel({
             Reset
           </Button>
           {status === "success" ? (
-            <Button size="sm" onClick={handleNext} className="h-6 text-[10px] px-2 bg-green-600 hover:bg-green-700 text-white">
+            <Button size="sm" onClick={handleNext} className="h-6 text-[10px] px-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_10px_-5px_var(--primary)]">
               Next
               <ArrowRight className="w-3 h-3 ml-1.5" />
             </Button>

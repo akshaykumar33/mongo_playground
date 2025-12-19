@@ -140,16 +140,16 @@ export default function PlaygroundPage() {
       <EditorConfig />
       
       {/* Header */}
-      <header className="flex-none h-14 border bg-card/80 backdrop-blur shadow-sm flex items-center justify-between px-4 z-10">
+      <header className="flex-none h-14  backdrop-blur shadow-sm flex items-center justify-between px-4 z-10">
          <div className="flex items-center gap-4">
              <Button variant="ghost" size="sm" onClick={() => router.push("/")} className="text-muted-foreground hover:text-foreground">
                  &larr; Home
              </Button>
              <div className="flex items-center gap-3">
-                 <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-emerald-700 dark:from-green-400 dark:to-emerald-600">
+                 <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
                     Mongo Playground
                  </span>
-                 <Badge variant="outline" className="font-mono text-xs uppercase tracking-wider">
+                 <Badge variant="outline" className="font-mono text-xs uppercase tracking-wider border-primary text-primary">
                     {levelId}
                  </Badge>
              </div>
@@ -160,14 +160,14 @@ export default function PlaygroundPage() {
             {/* Collections Viewer */}
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="hidden md:flex rounded-none">
+                    <Button variant="outline" size="sm" className="hidden md:flex rounded-none border-primary/50 hover:bg-primary/10  hover:text-primary transition-colors">
                         <Database className="w-4 h-4 mr-2" />
                         Collections
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-6xl h-[85vh]">
-                    <DialogHeader className="pb-4 border-b">
-                        <DialogTitle className="text-xl">Database Collections</DialogTitle>
+                    <DialogHeader className="pb-4">
+                        <DialogTitle className="text-xl text-primary">Database Collections</DialogTitle>
                         <DialogDescription>
                             Browse the mock data available for your queries. 
                             <span className="text-xs text-muted-foreground ml-2">(Read-only view)</span>
@@ -175,9 +175,9 @@ export default function PlaygroundPage() {
                     </DialogHeader>
                     <Tabs defaultValue="users" className="h-full flex flex-col min-h-0">
                         <div className="flex items-center justify-between pb-2">
-                            <TabsList>
+                            <TabsList className="bg-muted/50">
                                 {Object.keys(collections).map(name => (
-                                    <TabsTrigger key={name} value={name} className="capitalize">
+                                    <TabsTrigger key={name} value={name} className="capitalize data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                                         {name}
                                     </TabsTrigger>
                                 ))}
@@ -192,22 +192,22 @@ export default function PlaygroundPage() {
                                 <ScrollArea className="flex-1 h-full rounded-none border bg-muted/10 p-4">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {data.slice(0, 20).map((doc: any, i: number) => (
-                                            <div key={i} className="bg-card text-card-foreground p-0 rounded-none border shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                                            <div key={i} className="bg-card text-card-foreground p-0 rounded-none border shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow hover:border-primary/50">
                                                 {/* Card Header */}
                                                 <div className="px-4 py-2 border-b bg-muted/20 flex items-center justify-between gap-2">
                                                     <div className="flex items-center gap-2 overflow-hidden">
                                                         <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">ID</span>
-                                                        <Badge variant="secondary" className="font-mono text-xs">{doc._id}</Badge>
+                                                        <Badge variant="secondary" className="font-mono text-xs bg-primary/10 text-primary hover:bg-primary/20">{doc._id}</Badge>
                                                     </div>
                                                     <div className="flex gap-1.5 shrink-0">
-                                                        {doc.role && <Badge variant="outline" className="text-[10px] capitalize bg-background">{doc.role}</Badge>}
-                                                        {doc.category && <Badge variant="outline" className="text-[10px] capitalize bg-background">{doc.category}</Badge>}
+                                                        {doc.role && <Badge variant="outline" className="text-[10px] capitalize bg-background border-primary/30 text-primary/80">{doc.role}</Badge>}
+                                                        {doc.category && <Badge variant="outline" className="text-[10px] capitalize bg-background border-primary/30 text-primary/80">{doc.category}</Badge>}
                                                         {doc.status && (
                                                             <Badge 
                                                                 variant="outline" 
                                                                 className={cn(
                                                                     "text-[10px] capitalize bg-background",
-                                                                    doc.status === 'completed' && "text-green-500 border-green-200",
+                                                                    doc.status === 'completed' && "text-primary border-primary",
                                                                     doc.status === 'pending' && "text-yellow-500 border-yellow-200",
                                                                     doc.status === 'cancelled' && "text-red-500 border-red-200",
                                                                 )}
@@ -245,7 +245,7 @@ export default function PlaygroundPage() {
              {/* Questions Sidebar Trigger */}
              <Sheet>
                  <SheetTrigger asChild>
-                     <Button variant="outline" size="sm" className="rounded-none">
+                     <Button variant="outline" size="sm" className="rounded-none border-primary/50 hover:bg-primary/10 hover:text-primary transition-colors">
                          <List className="w-4 h-4 mr-2" />
                          Questions
                      </Button>
@@ -342,7 +342,7 @@ export default function PlaygroundPage() {
                     </div>
                     <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                         <div 
-                            className="h-full bg-green-500 transition-all duration-500" 
+                            className="h-full bg-primary transition-all duration-500 shadow-[0_0_5px_var(--primary)]" 
                             style={{ width: `${(completedChallenges.length / allQuestions.length) * 100}%` }}
                         />
                     </div>

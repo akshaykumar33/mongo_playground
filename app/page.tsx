@@ -12,7 +12,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/20 p-3 md:p-6">
       
       {/* Floating Main Container */}
-      <div className="flex-1 flex flex-col border border-border bg-card/30 shadow-2xl overflow-hidden relative">
+      <div className="flex-1 flex flex-col  overflow-hidden relative">
 
       {/* Navigation */}
       <nav className="w-full z-50 px-6 py-4 flex items-center justify-between backdrop-blur-sm bg-background/20 sticky top-0">
@@ -105,7 +105,7 @@ export default function Home() {
           ].map((feature, i) => (
             <div
               key={i}
-              className="group p-8 border border-border bg-card/50 backdrop-blur-md hover:bg-card hover:border-primary hover:shadow-[0_0_30px_-5px_var(--primary)] transition-all duration-300 hover:-translate-y-1"
+              className="group p-8  bg-card/50 backdrop-blur-md hover:bg-card transition-all duration-300 hover:-translate-y-1"
             >
               <div className="p-3 w-fit rounded-xl bg-primary/10 mb-6 group-hover:bg-primary/20 transition-colors">
                   <feature.icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
@@ -117,7 +117,7 @@ export default function Home() {
         </motion.div>
       </main>
 
-     <footer className="w-full py-6 text-center text-sm text-muted-foreground border-t border-border/50 bg-background/50 backdrop-blur">
+     <footer className="w-full py-6 text-center text-sm text-muted-foreground border-t border-border/50 bg-background/50 mt-2 backdrop-blur">
           <p>© 2024 Mongo Playground. Built for developers.</p>
        </footer>
        </div>

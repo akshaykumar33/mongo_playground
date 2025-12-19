@@ -5,7 +5,7 @@ export default function Loading() {
   return (
     <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden font-sans p-2 md:p-4 lg:p-6 gap-3 md:gap-4">
       {/* Header Skeleton */}
-      <header className="flex-none h-14 border bg-card/80 backdrop-blur shadow-sm flex items-center justify-between px-4 z-10 rounded-2xl">
+      <header className="flex-none h-14 bg-card/80 backdrop-blur shadow-sm flex items-center justify-between px-4 z-10 rounded-2xl">
          <div className="flex items-center gap-4">
              <Skeleton className="h-8 w-24" />
              <div className="flex items-center gap-3">
@@ -21,7 +21,7 @@ export default function Loading() {
       </header>
 
       {/* Main Content Skeleton */}
-      <div className="flex-1 w-full overflow-hidden flex border bg-card/50 shadow-sm rounded-2xl flex-col md:flex-row">
+      <div className="flex-1 w-full overflow-hidden flex bg-card/50 shadow-sm rounded-2xl flex-col md:flex-row">
         
         {/* Left Panel Skeleton */}
         <div className="w-full md:w-[400px] h-full border-r bg-muted/10 p-6 space-y-6">
