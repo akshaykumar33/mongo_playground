@@ -134,80 +134,157 @@
 
 /* --- Theme Overrides --- */
 
-/* Blue */
+/* Glow Effect Utility for Neon Theme (Universal) */
+[data-theme] .text-primary {
+  text-shadow: 0 0 12px var(--primary);
+}
+
+[data-theme] .border-primary,
+[data-theme] .ring-primary {
+  box-shadow: 0 0 8px var(--primary);
+}
+
+/* Specific Button Glow */
+[data-theme] button.bg-primary:hover {
+  box-shadow: 0 0 20px var(--primary);
+  transition: box-shadow 0.3s ease;
+}
+
+[data-theme] .bg-primary {
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* Neon Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted)/0.5);
+}
+
+[data-theme] ::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--primary);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  text-shadow: none;
+}
+
+/* --- Coolest Neon Effects --- */
+
+/* 1. Icons: Glow with drop-shadow */
+[data-theme] svg.text-primary,
+[data-theme] .text-primary svg {
+  filter: drop-shadow(0 0 4px var(--primary));
+}
+
+/* 2. Badges/Tags: Intense Glow */
+[data-theme] [data-slot="badge"] {
+  box-shadow: 0 0 8px var(--primary);
+  text-shadow: 0 0 2px currentColor;
+  border-color: var(--primary);
+  animation: neon-pulse 3s infinite alternate;
+}
+
+/* 3. Pulsing Animation */
+@keyframes neon-pulse {
+  0% {
+    box-shadow: 0 0 5px var(--primary);
+    filter: brightness(1);
+  }
+
+  100% {
+    box-shadow: 0 0 12px var(--primary), 0 0 20px var(--primary);
+    filter: brightness(1.2);
+  }
+}
+
+/* Special Case: Gradient Text also gets a shadow? */
+.bg-clip-text {
+  filter: drop-shadow(0 0 5px var(--primary));
+}
+
+
+/* Blue (Neon) */
 [data-theme="blue"] {
-  --primary: oklch(0.45 0.2 250);
+  --primary: oklch(0.6 0.25 260);
+  /* Bright Electric Blue */
   --primary-foreground: oklch(0.98 0 0);
-  --ring: oklch(0.45 0.2 250);
+  --ring: oklch(0.6 0.25 260);
 }
 
 .dark[data-theme="blue"] {
-  --primary: oklch(0.65 0.2 250);
+  --primary: oklch(0.65 0.25 260);
   --primary-foreground: oklch(0.1 0 0);
+  --border: oklch(0.6 0.25 260 / 0.4);
 }
 
-/* Green */
+/* Green (Neon) */
 [data-theme="green"] {
-  --primary: oklch(0.5 0.2 140);
-  --primary-foreground: oklch(0.98 0 0);
-  --ring: oklch(0.5 0.2 140);
+  --primary: oklch(0.65 0.25 150);
+  /* Toxic Green */
+  --primary-foreground: oklch(0.05 0 0);
+  --ring: oklch(0.65 0.25 150);
 }
 
 .dark[data-theme="green"] {
-  --primary: oklch(0.7 0.2 140);
-  --primary-foreground: oklch(0.1 0 0);
+  --primary: oklch(0.7 0.25 150);
+  --primary-foreground: oklch(0.05 0 0);
+  --border: oklch(0.7 0.25 150 / 0.4);
 }
 
-/* Rose */
+/* Rose (Neon) */
 [data-theme="rose"] {
-  --primary: oklch(0.5 0.2 10);
+  --primary: oklch(0.6 0.25 10);
+  /* Hot Pink/Red */
   --primary-foreground: oklch(0.98 0 0);
-  --ring: oklch(0.5 0.2 10);
+  --ring: oklch(0.6 0.25 10);
 }
 
 .dark[data-theme="rose"] {
-  --primary: oklch(0.7 0.2 10);
+  --primary: oklch(0.65 0.25 10);
   --primary-foreground: oklch(0.1 0 0);
+  --border: oklch(0.65 0.25 10 / 0.4);
 }
 
-/* Orange */
+/* Orange (Neon) */
 [data-theme="orange"] {
-  --primary: oklch(0.55 0.2 60);
+  --primary: oklch(0.65 0.23 50);
+  /* Bright Orange */
   --primary-foreground: oklch(0.98 0 0);
-  --ring: oklch(0.55 0.2 60);
+  --ring: oklch(0.65 0.23 50);
 }
 
 .dark[data-theme="orange"] {
-  --primary: oklch(0.75 0.2 60);
+  --primary: oklch(0.7 0.23 50);
   --primary-foreground: oklch(0.1 0 0);
+  --border: oklch(0.7 0.23 50 / 0.4);
 }
 
-/* Neon */
+/* Violet (Neon) - previously just "Neon" */
 [data-theme="neon"] {
-  --primary: oklch(0.6 0.25 300);
-  /* Bright Magenta/Purple */
+  --primary: oklch(0.6 0.28 300);
+  /* Ultra Violet */
   --primary-foreground: oklch(0.98 0 0);
-  --ring: oklch(0.6 0.25 300);
+  --ring: oklch(0.6 0.28 300);
 }
 
 .dark[data-theme="neon"] {
   --background: oklch(0.05 0 0);
-  /* Ultra dark background */
-  --primary: oklch(0.7 0.25 300);
+  --primary: oklch(0.65 0.28 300);
   --primary-foreground: oklch(0.1 0 0);
   --card: oklch(0.1 0 0);
-  --border: oklch(0.6 0.25 300 / 0.5);
-  /* Glowing borders */
-}
-
-/* Glow Effect Utility for Neon Theme */
-[data-theme="neon"] .text-primary {
-  text-shadow: 0 0 10px var(--primary);
-}
-
-[data-theme="neon"] .border-primary,
-[data-theme="neon"] .ring-primary {
-  box-shadow: 0 0 10px var(--primary);
+  --border: oklch(0.65 0.28 300 / 0.5);
 }
 
 

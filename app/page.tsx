@@ -9,10 +9,13 @@ import { ThemeCustomizer } from "@/components/theme-customizer"
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/20">
+    <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/20 p-3 md:p-6">
       
+      {/* Floating Main Container */}
+      <div className="flex-1 flex flex-col border border-border bg-card/30 shadow-2xl overflow-hidden relative">
+
       {/* Navigation */}
-      <nav className="absolute top-0 w-full z-50 px-6 py-4 flex items-center justify-between">
+      <nav className="w-full z-50 px-6 py-4 flex items-center justify-between backdrop-blur-sm bg-background/20 sticky top-0">
         <div className="font-bold text-xl tracking-tight flex items-center gap-2">
             <Database className="w-6 h-6 text-primary" />
             <span>Mongo<span className="text-primary">Playground</span></span>
@@ -102,9 +105,11 @@ export default function Home() {
           ].map((feature, i) => (
             <div
               key={i}
-              className="group p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-md hover:bg-card hover:border-primary/50 transition-all duration-300 hover:-translate-y-1"
+              className="group p-8 border border-border bg-card/50 backdrop-blur-md hover:bg-card hover:border-primary hover:shadow-[0_0_30px_-5px_var(--primary)] transition-all duration-300 hover:-translate-y-1"
             >
-              <feature.icon className="w-12 h-12 text-primary mb-6 group-hover:scale-110 transition-transform duration-300" />
+              <div className="p-3 w-fit rounded-xl bg-primary/10 mb-6 group-hover:bg-primary/20 transition-colors">
+                  <feature.icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
+              </div>
               <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
               <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
             </div>
@@ -112,9 +117,10 @@ export default function Home() {
         </motion.div>
       </main>
 
-       <footer className="w-full py-6 text-center text-sm text-muted-foreground border-t border-border/50 bg-background/50 backdrop-blur">
+     <footer className="w-full py-6 text-center text-sm text-muted-foreground border-t border-border/50 bg-background/50 backdrop-blur">
           <p>© 2024 Mongo Playground. Built for developers.</p>
        </footer>
+       </div>
     </div>
   )
 }

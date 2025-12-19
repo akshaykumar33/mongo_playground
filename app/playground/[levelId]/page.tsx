@@ -14,6 +14,7 @@ import { EditorConfig } from "@/app/playground/EditorConfig"
 import { ModeToggle } from "@/components/mode-toggle"
 import { EditorPanel } from "@/app/playground/components/EditorPanel"
 import { TerminalPanel } from "@/app/playground/components/TerminalPanel"
+import { ObjectRenderer } from "@/app/playground/components/ObjectRenderer"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import { useTheme } from "next-themes"
 import {
@@ -135,11 +136,11 @@ export default function PlaygroundPage() {
   }, [allQuestions])
 
   return (
-    <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden font-sans">
+    <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden font-sans p-2 md:p-4 lg:p-6 gap-3 md:gap-4">
       <EditorConfig />
       
       {/* Header */}
-      <header className="flex-none h-14 border-b border-border flex items-center justify-between px-4 bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/50 z-10">
+      <header className="flex-none h-14 border bg-card/80 backdrop-blur shadow-sm flex items-center justify-between px-4 z-10">
          <div className="flex items-center gap-4">
              <Button variant="ghost" size="sm" onClick={() => router.push("/")} className="text-muted-foreground hover:text-foreground">
                  &larr; Home
@@ -148,62 +149,92 @@ export default function PlaygroundPage() {
                  <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-emerald-700 dark:from-green-400 dark:to-emerald-600">
                     Mongo Playground
                  </span>
-                 <Badge variant="outline" className="text-xs uppercase tracking-wider font-semibold">
-                    {currentQuestion.difficulty}
+                 <Badge variant="outline" className="font-mono text-xs uppercase tracking-wider">
+                    {levelId}
                  </Badge>
              </div>
          </div>
 
          <div className="flex items-center gap-2">
-            <ThemeCustomizer />
-            <ModeToggle />
             
             {/* Collections Viewer */}
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="hidden md:flex">
+                    <Button variant="outline" size="sm" className="hidden md:flex rounded-none">
                         <Database className="w-4 h-4 mr-2" />
                         Collections
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-4xl h-[80vh]">
-                    <DialogHeader>
-                        <DialogTitle>Database Collections</DialogTitle>
-                        <DialogDescription>Inspect the available mock data.</DialogDescription>
+                <DialogContent className="max-w-6xl h-[85vh]">
+                    <DialogHeader className="pb-4 border-b">
+                        <DialogTitle className="text-xl">Database Collections</DialogTitle>
+                        <DialogDescription>
+                            Browse the mock data available for your queries. 
+                            <span className="text-xs text-muted-foreground ml-2">(Read-only view)</span>
+                        </DialogDescription>
                     </DialogHeader>
-                    <Tabs defaultValue="users" className="h-full flex flex-col">
-                        <TabsList className="w-full justify-start">
-                            {Object.keys(collections).map(name => (
-                                <TabsTrigger key={name} value={name}>
-                                    {name}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
+                    <Tabs defaultValue="users" className="h-full flex flex-col min-h-0">
+                        <div className="flex items-center justify-between pb-2">
+                            <TabsList>
+                                {Object.keys(collections).map(name => (
+                                    <TabsTrigger key={name} value={name} className="capitalize">
+                                        {name}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                            <Badge variant="outline" className="font-mono text-xs text-muted-foreground">
+                                {Object.keys(collections).length} Collections
+                            </Badge>
+                        </div>
+                        
                          {Object.entries(collections).map(([name, data]) => (
-                            <TabsContent key={name} value={name} className="flex-1 min-h-0 overflow-hidden flex flex-col">
-                                <ScrollArea className="flex-1 h-full rounded-md border p-4 bg-muted/20">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        {data.map((doc: any, i: number) => (
-                                            <div key={i} className="bg-card text-card-foreground p-4 rounded-lg border shadow-sm text-xs font-mono">
-                                                <div className="flex justify-between items-start mb-2 border-b pb-2 border-border/50">
-                                                    <span className="font-bold text-primary">_id: {doc._id}</span>
-                                                    {doc.role && <Badge variant="outline" className="text-[10px]">{doc.role}</Badge>}
-                                                    {doc.category && <Badge variant="outline" className="text-[10px]">{doc.category}</Badge>}
+                            <TabsContent key={name} value={name} className="flex-1 min-h-0 overflow-hidden flex flex-col mt-0">
+                                <ScrollArea className="flex-1 h-full rounded-none border bg-muted/10 p-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {data.slice(0, 20).map((doc: any, i: number) => (
+                                            <div key={i} className="bg-card text-card-foreground p-0 rounded-none border shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                                                {/* Card Header */}
+                                                <div className="px-4 py-2 border-b bg-muted/20 flex items-center justify-between gap-2">
+                                                    <div className="flex items-center gap-2 overflow-hidden">
+                                                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">ID</span>
+                                                        <Badge variant="secondary" className="font-mono text-xs">{doc._id}</Badge>
+                                                    </div>
+                                                    <div className="flex gap-1.5 shrink-0">
+                                                        {doc.role && <Badge variant="outline" className="text-[10px] capitalize bg-background">{doc.role}</Badge>}
+                                                        {doc.category && <Badge variant="outline" className="text-[10px] capitalize bg-background">{doc.category}</Badge>}
+                                                        {doc.status && (
+                                                            <Badge 
+                                                                variant="outline" 
+                                                                className={cn(
+                                                                    "text-[10px] capitalize bg-background",
+                                                                    doc.status === 'completed' && "text-green-500 border-green-200",
+                                                                    doc.status === 'pending' && "text-yellow-500 border-yellow-200",
+                                                                    doc.status === 'cancelled' && "text-red-500 border-red-200",
+                                                                )}
+                                                            >
+                                                                {doc.status}
+                                                            </Badge>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                                <div className="space-y-1 text-muted-foreground break-all">
-                                                    {Object.entries(doc).map(([key, value]) => {
-                                                        if (key === "_id" || key === "role" || key === "category") return null
-                                                        return (
-                                                            <div key={key} className="flex gap-2">
-                                                                <span className="font-semibold text-foreground/80">{key}:</span>
-                                                                <span>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</span>
-                                                            </div>
-                                                        )
-                                                    })}
+                                                
+                                                {/* Card Content */}
+                                                <div className="p-4 text-xs font-mono bg-background/50 h-full">
+                                                     <ObjectRenderer data={doc} />
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
+                                    {data.length > 20 && (
+                                        <div className="py-8 text-center">
+                                            <p className="text-sm text-muted-foreground font-medium">
+                                                Showing 20 of {data.length.toLocaleString()} records
+                                            </p>
+                                            <p className="text-xs text-muted-foreground/60 mt-1">
+                                                Use queries to explore the full dataset
+                                            </p>
+                                        </div>
+                                    )}
                                 </ScrollArea>
                             </TabsContent>
                         ))}
@@ -214,7 +245,7 @@ export default function PlaygroundPage() {
              {/* Questions Sidebar Trigger */}
              <Sheet>
                  <SheetTrigger asChild>
-                     <Button variant="outline" size="sm">
+                     <Button variant="outline" size="sm" className="rounded-none">
                          <List className="w-4 h-4 mr-2" />
                          Questions
                      </Button>
@@ -235,7 +266,7 @@ export default function PlaygroundPage() {
                                                  key={q.id}
                                                  onClick={() => setCurrentQuestion(q)}
                                                  className={cn(
-                                                     "w-full text-left px-3 py-2 rounded-md text-sm transition-colors flex items-center justify-between group",
+                                                     "w-full text-left px-3 py-2 rounded-none text-sm transition-colors flex items-center justify-between group",
                                                      currentQuestion.id === q.id 
                                                         ? "bg-primary/10 text-primary font-medium" 
                                                         : "hover:bg-muted text-muted-foreground hover:text-foreground"
@@ -254,12 +285,15 @@ export default function PlaygroundPage() {
                      </ScrollArea>
                  </SheetContent>
              </Sheet>
+             
+             <ThemeCustomizer />
+             <ModeToggle />
          </div>
       </header>
 
       {/* Main Content Fixed Layout */}
       <div className={cn(
-        "flex-1 w-full border-t overflow-hidden flex", 
+        "flex-1 w-full overflow-hidden flex border bg-card/50 shadow-sm", 
         isDesktop ? "flex-row" : "flex-col"
       )}>
         
