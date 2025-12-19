@@ -1,65 +1,120 @@
-import Image from "next/image";
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
+import { ArrowRight, Database, Trophy, Zap, Github } from "lucide-react"
+import Link from "next/link"
+import { ModeToggle } from "@/components/mode-toggle"
+import { ThemeCustomizer } from "@/components/theme-customizer"
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/20">
+      
+      {/* Navigation */}
+      <nav className="absolute top-0 w-full z-50 px-6 py-4 flex items-center justify-between">
+        <div className="font-bold text-xl tracking-tight flex items-center gap-2">
+            <Database className="w-6 h-6 text-primary" />
+            <span>Mongo<span className="text-primary">Playground</span></span>
+        </div>
+        <div className="flex items-center gap-2">
+             <ThemeCustomizer />
+             <ModeToggle />
+             <Button variant="ghost" size="icon" asChild>
+                 <Link href="https://github.com" target="_blank">
+                     <Github className="w-5 h-5" />
+                 </Link>
+             </Button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <main className="flex-1 flex flex-col items-center justify-center relative px-4">
+        {/* Abstract Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-[128px]" />
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="z-10 text-center space-y-6 max-w-4xl"
+        >
+          <div className="inline-flex items-center space-x-2 bg-muted/50 border border-border rounded-full px-4 py-1.5 text-sm text-muted-foreground backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span>v1.0 Public Beta</span>
+          </div>
+          
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter">
+            Master <span className="text-primary block md:inline">MongoDB</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            The ultimate interactive playground. clear challenges, instant feedback, and gamified progress.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <motion.div
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8, delay: 0.2 }}
+             className="flex flex-col sm:flex-row gap-4 justify-center pt-8"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <Link href="/levels">
+                <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
+                Start Coding
+                <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+            </Link>
+            <Button variant="outline" size="lg" className="h-14 px-8 text-lg rounded-full backdrop-blur-sm bg-background/50">
+                View Leaderboard
+            </Button>
+          </motion.div>
+        </motion.div>
+
+        {/* Features Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 max-w-5xl w-full z-10"
+        >
+          {[
+            {
+              icon: Database,
+              title: "Real Interactions",
+              desc: "Execute queries against a live in-memory database engine.",
+            },
+            {
+              icon: Zap,
+              title: "Instant Feedback",
+              desc: "Get immediate results and validation for your solutions.",
+            },
+            {
+              icon: Trophy,
+              title: "Gamified Learning",
+              desc: "Earn XP, complete daily streaks, and unlock new levels.",
+            },
+          ].map((feature, i) => (
+            <div
+              key={i}
+              className="group p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-md hover:bg-card hover:border-primary/50 transition-all duration-300 hover:-translate-y-1"
+            >
+              <feature.icon className="w-12 h-12 text-primary mb-6 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+              <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
+            </div>
+          ))}
+        </motion.div>
       </main>
+
+       <footer className="w-full py-6 text-center text-sm text-muted-foreground border-t border-border/50 bg-background/50 backdrop-blur">
+          <p>© 2024 Mongo Playground. Built for developers.</p>
+       </footer>
     </div>
-  );
+  )
 }

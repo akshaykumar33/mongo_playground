@@ -1,0 +1,9 @@
+app/playground/[levelId]/page.tsx(255,28): error TS2322: Type '{ children: Element[]; direction: string; className: string; }' is not assignable to type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & { children?: ReactNode; className?: string | undefined; ... 8 more ...; style?: CSSProperties | undefined; } & { ...; }'.
+  Property 'direction' does not exist on type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & { children?: ReactNode; className?: string | undefined; ... 8 more ...; style?: CSSProperties | undefined; } & { ...; }'.
+app/playground/[levelId]/page.tsx(310,35): error TS2322: Type '{ children: Element[]; direction: string; }' is not assignable to type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & { children?: ReactNode; className?: string | undefined; ... 8 more ...; style?: CSSProperties | undefined; } & { ...; }'.
+  Property 'direction' does not exist on type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & { children?: ReactNode; className?: string | undefined; ... 8 more ...; style?: CSSProperties | undefined; } & { ...; }'.
+scripts/debug-eval.ts(16,40): error TS2554: Expected 1 arguments, but got 2.
+scripts/debug-eval.ts(43,38): error TS2345: Argument of type '(code: string, db: any) => any' is not assignable to parameter of type '(code: string) => any'.
+  Target signature provides too few arguments. Expected 2 or more, but got 1.
+scripts/debug-eval.ts(44,46): error TS2345: Argument of type '(code: string, db: any) => any' is not assignable to parameter of type '(code: string) => any'.
+  Target signature provides too few arguments. Expected 2 or more, but got 1.
