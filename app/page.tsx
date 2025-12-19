@@ -38,9 +38,9 @@ export default function Home() {
              <ThemeCustomizer />
              <ModeToggle />
              <Button variant="ghost" size="icon" asChild>
-                 <Link href="https://github.com" target="_blank">
-                     <Github className="w-5 h-5 text-primary" />
-                 </Link>
+                <Link href="https://github.com/akshaykumar33/mongo_playground" target="_blank">
+                    <Github className="w-5 h-5 text-primary" />
+                </Link>
              </Button>
         </div>
 
@@ -77,7 +77,7 @@ export default function Home() {
                         <div className="space-y-3">
                              <h4 className="text-sm font-medium text-muted-foreground px-1">Community</h4>
                              <Button variant="secondary" className="w-full justify-start h-12 px-4 rounded-xl text-base font-medium" asChild>
-                                <Link href="https://github.com" target="_blank">
+                                <Link href="https://github.com/akshaykumar33/mongo_playground" target="_blank">
                                     <Github className="w-5 h-5 mr-3 text-primary" />
                                     Star on GitHub
                                 </Link>
