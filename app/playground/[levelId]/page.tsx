@@ -1,11 +1,4 @@
-// app/playground/page-with-indexeddb.tsx
-// Usage: Replace the current page.tsx with this version
-// Key improvements:
-// 1. Uses IndexedDB for persistent caching (no extra thread)
-// 2. Stores collections in IndexedDB to avoid reloading
-// 3. Tracks execution history and statistics
-// 4. Automatic cleanup of expired cache entries
-// 5. Shows cache hit rate and performance metrics
+// Uses IndexedDB for persistent caching (no extra thread)
 
 "use client"
 
